@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/flixserv/moviepagolfiles/
+    - export DEPLOYPATH=/home/flixserv/moviepagol_files/
     - /bin/cp -r * $DEPLOYPATH
     

@@ -183,3 +183,4 @@ Thumbs.db
 # Extra #
 #########
 production
+db.sqlite3

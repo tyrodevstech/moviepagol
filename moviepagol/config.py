@@ -5,12 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv("DEBUG", True)
 ROOT = Path.home()
-DOMAIN_ROOT = 'moviepagol.com'
+DOMAIN_ROOT = "moviepagol.com"
 
-SITE_URL = 'https://moviepagol.com' if not DEBUG else ''
-
+SITE_URL = "https://moviepagol.com" if not DEBUG else ""
 
 # DATABASES = {
 #     'pgsql': {
@@ -22,4 +21,3 @@ SITE_URL = 'https://moviepagol.com' if not DEBUG else ''
 #         'PORT': '9999',
 #     }
 # }
-

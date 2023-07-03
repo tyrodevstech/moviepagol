@@ -184,3 +184,4 @@ Thumbs.db
 #########
 production
 db.sqlite3
+staticfiles

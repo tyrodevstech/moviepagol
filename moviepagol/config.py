@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DEBUG = os.getenv("DEBUG", True)
+DEBUG = os.getenv("DEBUG") == 'True'
+
 ROOT = Path.home()
 DOMAIN_ROOT = "moviepagol.com"
 

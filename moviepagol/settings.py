@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", True)
+DEBUG = os.getenv("DEBUG") == 'True'
 
 ALLOWED_HOSTS = ["*"]
 
@@ -23,8 +23,6 @@ DEFAULT_APPS = [
     "jet",
     "django.contrib.admin",
     "django.contrib.auth",
-    "django.contrib.sites",
-    "django.contrib.sitemaps",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -135,8 +133,6 @@ if not DEBUG:
 else:
     MEDIA_ROOT = BASE_DIR / "mediafiles"
     STATIC_ROOT = BASE_DIR / "staticfiles"
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Default primary key field type

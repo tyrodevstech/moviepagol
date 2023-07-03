@@ -1,0 +1,80 @@
+
+/* Download Dropdown */
+
+.dropdown-container {
+    @apply relative rounded text-lg md:w-max md:text-base flex-1;
+}
+.dropdown-container .btn {
+    @apply w-full;
+}
+.dropdown-container .dropdown {
+    @apply absolute left-0 right-0 hidden w-full min-w-max rounded bg-neutral-800;
+    z-index: 999;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 2px;
+    box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.6);
+}
+
+.dropdown-container .dropdown::after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 15px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid rgb(38, 38, 38);
+    display: block;
+    z-index: 2;
+    transition: all 300ms linear;
+}
+
+.dropdown-container .dropdown a {
+    @apply block w-full whitespace-nowrap rounded-sm px-3 py-1;
+    transition: all 0.2s;
+    font-size: 95%;
+}
+
+.dropdown-container .dropdown a:hover {
+    background-color: var(--main-color);
+}
+
+.dropdown-container .dropdown li {
+    position: relative;
+    margin: 2px 0;
+}
+
+.dropdown-container .dropdown .dropdown-sub {
+    position: relative;
+    display: none;
+    /* padding-left: 0.75rem; */
+    padding-right: 0.25rem;
+    @apply ml-2;
+}
+
+.dropdown-container .dropdown .dropdown-sub a {
+    /* font-size: 90%; */
+    @apply border-b border-neutral-700;
+    border-left: 2.5px solid transparent;
+}
+.dropdown-container .dropdown .dropdown-sub a:last-child {
+    border-bottom: none;
+}
+.dropdown-container .dropdown .dropdown-sub a:hover {
+    /* font-size: 90%; */
+    border-left: 2.5px solid hsl(205, 100%, 90%);
+}
+
+.dropdown-container .dropdown .dropdown-sub.active {
+    display: block;
+}
+
+.expand-icon {
+    @apply inline-block transition-transform;
+    &.active{
+        @apply rotate-90;
+    }
+}
+/* Misc */

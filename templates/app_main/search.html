@@ -1,0 +1,502 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% load customtags %}
+{% block content %}
+<div class="container">
+    <h2 class="p-2 bg-neutral-500 text-xl text-center mt-6">
+        Search Result For : "{{searched}}"</h2>
+</div>
+
+<!-- MOVIES SECTION -->
+{% if movieobjs %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>movies</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in movieobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.type|humanize}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END MOVIES SECTION -->
+
+<!-- SERIES SECTION -->
+{% if seriesobjs %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>tv & web series</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in seriesobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_series' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.type|humanize}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END SERIES SECTION -->
+
+<!-- ANIMATIONS SECTION -->
+{% if animationobjs %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>animations</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in animationobjs|slice:":50" %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-clock"></i>
+                                        <span>{{i.runtime}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END ANIMATIONS SECTION -->
+
+<!-- ANIME MOVIES SECTION -->
+{% if animemovieobjs %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>anime movies</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in animemovieobjs|slice:":50" %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-clock"></i>
+                                        <span>{{i.runtime}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END ANIME MOVIES SECTION -->
+
+{% if animeseriesobjs %}
+<!-- ANIME SERIES SECTION -->
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>anime series</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in animeseriesobjs|slice:":50" %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_series' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-calendar-stats"></i>
+                                        <span>{% if not i.end_date %} {{i.release_date|date:"Y"}} {% else %}
+                                            {{i.release_date|date:"Y"}} - {{i.end_date|date:"Y"}} {% endif %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END ANIME SERIES SECTION -->
+
+<!-- KDARAMA SECTION -->
+{% if kdramaobjs %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>k-dramas</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in kdramaobjs|slice:":50" %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_series' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-calendar-stats"></i>
+                                        <span>{% if not i.end_date %} {{i.release_date|date:"Y"}} {% else %}
+                                            {{i.release_date|date:"Y"}} - {{i.end_date|date:"Y"}} {% endif %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END SERIES SECTION -->
+
+<!-- SOFTWARES SECTION -->
+{% if softwaresobjs %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>softwares</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in softwaresobjs|slice:":50" %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_softwaresGames' category=i.category pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-info-octagon"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{{i.platform|title}}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.category|title}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END SOFTWARES SECTION -->
+
+<!-- GAMES SECTION -->
+{% if gamesobjs %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>Games</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in gamesobjs|slice:":50" %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_softwaresGames' category=i.category pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-info-octagon"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div
+                                class="info1">
+                                {{i.info1}}
+                            </div>
+                            {% endif %}
+                            {% if i.info2 %}
+                            <div
+                                class="info2">
+                                {{i.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{{i.platform|title}}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.category|title}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- END GAMES SECTION -->
+
+{% endblock content %}

@@ -1,0 +1,160 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% load customtags %}
+{% block title %}{% if type == "korean" %}K-Dramas{% elif type == "indian" %}Indian - Tv & Web
+Series{% elif type == "foreign" %}Foreign - Tv & Web Series{% elif type == "anime" %}Anime - Tv & Web
+Series{% elif type == "animation" %}Animation - Tv & Web Series{% elif type == "english" %}English - Tv & Web
+Series{% else %}Tv & Web Series{% endif %} | Movie Pagol{% endblock title %}
+
+{% block twittertitle %}{% if type == "korean" %}K-Dramas{% elif type == "indian" %}Indian - Tv & Web
+Series{% elif type == "foreign" %}Foreign - Tv & Web Series{% elif type == "anime" %}Anime - Tv & Web
+Series{% elif type == "animation" %}Animation - Tv & Web Series{% elif type == "english" %}English - Tv & Web
+Series{% else %}Tv & Web Series{% endif %} | Movie Pagol{% endblock twittertitle %}
+
+{% block ogtitle %}{% if type == "korean" %}K-Dramas{% elif type == "indian" %}Indian - Tv & Web
+Series{% elif type == "foreign" %}Foreign - Tv & Web Series{% elif type == "anime" %}Anime - Tv & Web
+Series{% elif type == "animation" %}Animation - Tv & Web Series{% elif type == "english" %}English - Tv & Web
+Series{% else %}Tv & Web Series{% endif %} | Movie Pagol{% endblock ogtitle %}
+
+{% block ogtype %}series{% endblock ogtype%}
+
+{% block content %}
+<div class="section" style="max-width: 1920px;">
+    <div class="container">
+        <div class="section-header">
+            <h3>
+                {% if type == "korean" %}
+                k-dramas
+                {% elif type == "indian" %}
+                indian - tv & web series
+                {% elif type == "foreign" %}
+                foreign - tv & web series
+                {% elif type == "anime" %}
+                anime - Tv & Web series
+                {% elif type == "animation" %}
+                animation - Tv & Web series
+                {% elif type == "english" %}
+                english - Tv & Web Series
+                {% elif type == "documentary" %}
+                documentary - Tv & Web Series
+                {% else %}
+                Tv & Web series
+                {% endif %}
+            </h3>
+            <div class="totalobj">
+                <span class="total">Total - {{totalobj}}</span>
+            </div>
+        </div>
+        <div class="all-contents">
+            <!-- MOVIE ITEM -->
+            {% for i in series %}
+            <a href="{% url 'details_series' pk=i.slug %}" class="all-content-item">
+                {% if i.info1 %}
+                <div class="info1">
+                    {{i.info1}}
+                </div>
+                {% endif %}
+                {% if i.info2 %}
+                <div class="info2">
+                    {{i.info2}}
+                </div>
+                {% endif %}
+                <div class="card-overlay"></div>
+                <img src="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                    alt="" loading="lazy">
+                <div class="slide-item__content">
+                    <div class="slide-item__title">
+                        {{i.title}}
+                    </div>
+                    <div class="content-infos">
+                        <div class="content-info">
+                            <i class="ti ti-star"></i>
+                            <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                        </div>
+                        {% if type == "all" or type == "indian" or type == "foreign" %}
+                        <div class="content-info">
+                            <i class="ti ti-align-box-bottom-right"></i>
+                            <span>{{i.type|humanize}}</span>
+                        </div>
+                        {% endif %}
+                        <div class="content-info">
+                            <i class="ti ti-calendar-stats"></i>
+                            <span>{% if not i.end_date %} {{i.release_date|date:"Y"}}
+                                {% else %}{{i.release_date|date:"Y"}} - {{i.end_date|date:"Y"}}{% endif %}</span>
+                        </div>
+                        {% if i.rated %}
+                        <div class="content-info">
+                            <i class="ti ti-wave-saw-tool"></i>
+                            <span>{{i.rated}}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <ul class="pagination justify-content-center">
+        {% if series.number != 1 %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+        </li>
+        {% endif %}
+        {% if series.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ series.previous_page_number }}">&lsaquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&lsaquo;</a>
+        </li>
+        {% endif %}
+
+        {% if series.number|add:'-4' > 1 %}
+        <li class="page-item"><a class="page-link" href="?page={{ series.number|add:'-5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in series.paginator.page_range %}
+        {% if series.number == i %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% elif i > series.number|add:'-5' and i < series.number|add:'5' %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if series.paginator.num_pages > series.number|add:'4' %}
+        <li class="page-item"><a class="page-link" href="?page={{ series.number|add:'5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if series.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ series.next_page_number }}">&rsaquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&rsaquo;</a>
+        </li>
+        {% endif %}
+        {% if series.number != series.paginator.num_pages %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ series.paginator.num_pages }}">&raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock content %}

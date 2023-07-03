@@ -1,0 +1,1 @@
+from moviepagol.wsgi import application

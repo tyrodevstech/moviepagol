@@ -1,0 +1,49 @@
+{% load customtags %} 
+
+<div class="section">
+    <div class="container">
+        <div class="section-header"><h3>You may also like</h3></div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in recobjs|slice:":20" %}
+                    <li class="splide__slide">
+                        <a href="{% if i.model_name == 'series' %}{% url 'details_series' pk=i.slug %}{% else %}{% url 'details_movie' pk=i.slug %}{% endif %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img
+                                data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail"
+                            />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos gap-2">
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.type|humanize}}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

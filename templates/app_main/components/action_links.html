@@ -1,0 +1,72 @@
+{% load customtags %} 
+
+<div class="actions-container mt-6 gap-3">
+    <div class="dropdown-container">
+        <div class="btn btn-hover downloadbtn gap-2">
+            <svg class="z-10 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM10.6219 8.41459L15.5008 11.6672C15.6846 11.7897 15.7343 12.0381 15.6117 12.2219C15.5824 12.2658 15.5447 12.3035 15.5008 12.3328L10.6219 15.5854C10.4381 15.708 10.1897 15.6583 10.0672 15.4745C10.0234 15.4088 10 15.3316 10 15.2526V8.74741C10 8.52649 10.1791 8.34741 10.4 8.34741C10.479 8.34741 10.5562 8.37078 10.6219 8.41459Z"
+                    fill="rgba(255,255,255,1)"
+                ></path>
+            </svg>
+            <span>watch</span>
+            <!-- <i class="fas fa-caret-right fa-md expand-icon"></i> -->
+        </div>
+        <div class="dropdown">
+            <ul>
+                {% if obj.watch_link_main_source or obj.watch_link_alt1_name and obj.watch_link_alt1_url or obj.watch_link_alt2_name and obj.watch_link_alt2_url%} 
+                {% if obj.watch_link_main_source %}
+                <li><a href="{{ obj.watch_link_main_source }}">Main Source</a></li>
+                {% endif %} {% if obj.watch_link_alt1_name and obj.watch_link_alt1_url %}
+                <li><a href="{{ obj.watch_link_alt1_url }}">{{ obj.watch_link_alt1_name }}</a></li>
+                {% endif %} {% if obj.watch_link_alt2_name and obj.watch_link_alt2_url %}
+                <li><a href="{{ obj.watch_link_alt2_url }}">{{ obj.watch_link_alt2_name }}</a></li>
+                {% endif %} {% else %}
+                <li><a>No link available</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="dropdown-container">
+        <div class="btn btn-hover downloadbtn gap-2">
+            <svg class="z-10 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path
+                    d="M3 19H21V21H3V19ZM13 13.1716L19.0711 7.1005L20.4853 8.51472L12 17L3.51472 8.51472L4.92893 7.1005L11 13.1716V2H13V13.1716Z"
+                    fill="rgba(255,255,255,1)"
+                ></path>
+            </svg>
+            <span>Download</span>
+            <!-- <i class="fas fa-caret-right fa-md expand-icon"></i> -->
+        </div>
+        <div class="dropdown">
+            <ul>
+                {% if obj.linksource %} {% for source in obj.linksource.all %}
+                <li>
+                    <a class="toogle-dropdown-sub"
+                        ><i class="ti ti-caret-right expand-icon"></i>{{source}}</a
+                    >
+                    <div class="dropdown-sub">
+                        {% for cat in source.linkcat.all %}
+                        <a class="toogle-dropdown-sub"
+                            ><i class="ti ti-caret-right expand-icon"></i>{{cat.category}}</a
+                        >
+                        <div class="dropdown-sub">
+                            {% for subcat in cat.linksubcat.all|sortSubCatQs %}
+                            <a href="{{subcat.link}}">{{subcat.subcategory}}</a>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </li>
+                {% endfor %} {% endif %} {% if obj.torrent %}
+                <li><a href="{{obj.torrent}}">Torrent</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% if obj.subtitle_link %}
+    <a class="subtitle btn btn-hover" href="{{obj.subtitle_link}}"><span>Subtitle</span></a>
+    {% endif %}
+</div>

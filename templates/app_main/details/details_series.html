@@ -1,0 +1,88 @@
+{% extends 'app_main/base.html' %} 
+{% load static %} 
+{% load customtags %} 
+{% block title %}{{obj.title}} | Movie Pagol{% endblock title %}
+{% block description %}{{obj.description|truncatechars:500}}{% endblock description %}
+{% block twittertitle %}{{obj.title}} | Movie Pagol{% endblock twittertitle %}
+{% block twitterdescription %}{{obj.description|truncatechars:500}}{% endblock twitterdescription %}
+{% block twitterimg %}{% if obj.tmdb_thumbnail %}{{obj.tmdb_thumbnail}}{% elif obj.thumbnail %}{{ SITE_URL }}{{obj.thumbnail.url}}{% endif %}{% endblock twitterimg %}
+{% block ogtitle %}{{obj.title}} | Movie Pagol{% endblock ogtitle %} {% block ogtype %}{{obj.type}}{% endblock ogtype%}
+{% block ogimage %}{% if obj.tmdb_thumbnail %}{{obj.tmdb_thumbnail}}{% elif obj.thumbnail %}{{ SITE_URL }}{{obj.thumbnail.url}}{% endif %}{% endblock ogimage %} 
+{% block ogdescription %}{{obj.description|truncatechars:500}}{% endblock ogdescription %}
+{% block content %}
+<div class="content-details">
+    <div class="container">
+        <div class="content-details-wrapper">
+            <div class="flex-shrink-0 max-w-full w-max mx-auto md:max-w-xs">
+                <img
+                    class="w-full"
+                    src="{% if obj.tmdb_thumbnail %}{{obj.tmdb_thumbnail}}{% elif obj.thumbnail %}{{obj.thumbnail.url}}{% endif %}"
+                    alt="thumbnail"
+                    loading="lazy"
+                />
+            </div>
+            {% include 'app_main/components/content_details.html' %}
+        </div>
+        {% include 'app_main/components/still_path.html' %}
+        <!-- SEASONS -->
+        <div class="section">
+            <div class="container">
+                {% if not seasons %}
+                <div class="section-header">No seasons Found !!!</div>
+                {% else %}
+                <div class="section-header"><h3>Seasons</h3></div>
+                <div class="splide slider__content animate__animated" id="">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <!-- ITEM -->
+                            {% for i in seasons %}
+                            <li class="splide__slide">
+                                <a href="{% url 'details_season' pk=i.id %}" class="slide-item">
+                                    <div class="play-btn">
+                                        <i class="ti ti-player-play"></i>
+                                    </div>
+                                    {% if i.info1 %}
+                                    <div class="info1">{{i.info1}}</div>
+                                    {% endif %} {% if i.info2 %}
+                                    <div class="info2">{{i.info2}}</div>
+                                    {% endif %}
+                                    <div class="card-overlay"></div>
+                                    <img
+                                        data-splide-lazy="{% if i.thumbnail %}{{ i.thumbnail.url }}{% elif obj.tmdb_thumbnail %}{{obj.tmdb_thumbnail}}{% elif obj.thumbnail %}{{obj.thumbnail.url}}{% endif %}"
+                                        alt="thumbnail"
+                                    />
+                                    <div class="slide-item__content">
+                                        <div class="slide-item__title">Season - {{i.season_number}}</div>
+                                        <div class="content-infos">
+                                            <div class="content-info">
+                                                <i class="ti ti-box-multiple"></i>
+                                                <span>Ep: {{i.episode_count}}</span>
+                                            </div>
+                                            <div class="content-info">
+                                                <i class="ti ti-dots-circle-horizontal"></i>
+                                                <span>{% if i.complete %} Completed {% else %} Running {% endif %}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            {% endfor %}
+                            <!-- END ITEM -->
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- End SEASONS -->
+        {% include 'app_main/components/social_links.html' %}
+    </div>
+</div>
+
+<!-- Recommend Section -->
+{% include 'app_main/components/recommended_contents.html' %}
+<!-- End Recommend Section -->
+
+{% comment %} {% include 'app_main/components/comments.html' %} {% endcomment %}
+
+{% endblock content %}

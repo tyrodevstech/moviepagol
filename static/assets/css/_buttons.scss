@@ -1,0 +1,51 @@
+.btn {
+    @apply isolate flex items-center overflow-hidden relative bg-neutral-500/20 backdrop-blur uppercase justify-center rounded border border-transparent  px-5 py-2 text-sm font-medium text-white;
+
+  i {
+      margin-right: 1rem;
+  }
+
+
+}
+
+.expand-icon {
+  margin-right: 1rem;
+}
+
+.btn-hover {
+
+  &::before {
+      z-index: -1;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 65%;
+      height: 100%;
+      clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
+      background-color: var(--main-color);
+      transition: 0.3s ease-in-out;
+  }
+
+  &:hover:before {
+    width: 100%;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+
+.fill_btn {
+  background-color: var(--main-color);
+
+  &:hover {
+      background-color: #006ce7;
+  }
+}
+
+
+.play-btn {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  i {
+    @apply inline-block scale-0 text-[3.5rem] transition-transform delay-100 duration-200;
+  }
+}
+

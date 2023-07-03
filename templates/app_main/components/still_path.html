@@ -1,0 +1,19 @@
+{% load customtags %} 
+
+{% if obj.still_path %}
+<div class="mt-12 mx-auto max-w-full">
+    <div class="splide" id="still_path">
+        <div class="splide__track">
+            <ul class="splide__list">
+                {% for stp in obj.still_path|splitVal:"," %}
+                <li class="splide__slide">
+                    <a data-fancybox="gallery" data-src="https://image.tmdb.org/t/p/w1280{{stp}}">
+                        <img src="https://image.tmdb.org/t/p/w300{{stp}}" />
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endif %}

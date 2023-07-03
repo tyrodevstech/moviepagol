@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(125deg, #c5d7ff, #e4ffd0);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    text-align: center;
+    color: #343434;
+    overflow: hidden;
+}
+
+.container h1 {
+    font-size: 10rem;
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: 1.25rem;
+}
+
+.container a {
+    text-decoration: none;
+    background: #0A7CFF;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    display: inline-block;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: 0.4s;
+}
+
+.container a:hover {
+    background: #248aff;
+}
+
+@media screen and (max-width:768px) {
+    .container h1 {
+        font-size: 5rem;
+        letter-spacing: 0.5rem;
+    }
+}

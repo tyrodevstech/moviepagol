@@ -1,0 +1,136 @@
+/* Navigation Bar */
+.nav-wrapper {
+    @apply fixed left-0 right-0 top-0 z-20 w-full;
+    background-color: var(--box-bg);
+}
+
+.nav {
+    @apply flex w-full items-center justify-between px-4;
+    color: var(--text-color);
+    height: var(--nav-height);
+    a {
+        color: var(--text-color);
+    }
+    .logo {
+        font-size: 1.85em !important;
+        font-weight: 900;
+        img {
+            @apply w-36 2xl:w-40;
+        }
+    }
+}
+
+.search-container {
+    @apply absolute inset-x-4 top-full mt-2 hidden h-full max-h-11 sm:max-h-10;
+    &.search-show {
+        @apply !block;
+    }
+    @screen sm {
+        @apply relative inset-x-[unset] top-[unset] mt-0 block;
+    }
+    @screen lg {
+        @apply absolute inset-x-4 top-full mt-2 hidden;
+        &.search-show {
+            @apply !block;
+        }
+    }
+    @screen xl {
+        @apply relative inset-x-[unset] top-[unset] mt-0 block;
+    }
+}
+.menu-items {
+    @apply absolute -left-full gap-3 lg:gap-0 top-full flex h-screen w-4/5 max-w-md flex-col  items-start justify-start overflow-y-auto bg-neutral-900 p-4 pb-24 text-sm lg:text-[0.75rem] transition-all lg:static lg:left-0 lg:top-0 lg:h-full  lg:w-full lg:max-w-3xl lg:flex-row lg:items-center lg:justify-center lg:overflow-visible lg:p-0 lg:pb-0 2xl:text-[0.9rem];
+    .menu-item {
+        @apply inline-flex w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 uppercase transition-colors;
+        &:hover {
+            background-color: var(--main-color);
+        }
+    }
+    &.active {
+        left: 0;
+    }
+}
+
+.dropdown {
+    @apply relative w-full lg:w-auto;
+    .dropdown-menu .menu-item {
+        @apply text-[90%];
+    }
+    .dropdown-menu,
+    .menu-right {
+        @apply invisible absolute left-0 w-48 min-w-max rounded-sm bg-neutral-800 p-1 opacity-0;
+        top: 50px;
+        transition: all 0.3s ease;
+    }
+    .menu-item {
+        @apply flex w-full min-w-max items-center justify-between whitespace-nowrap;
+        i {
+            @apply ml-2;
+        }
+    }
+    &:hover .dropdown-menu {
+        top: calc(100% + 0.5rem);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .dropdown-right {
+        position: relative;
+        .menu-right {
+            top: 0;
+            left: calc(100% + 1rem);
+        }
+        &:hover .menu-right {
+            left: calc(100% + 0.5rem);
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+/* Searched Content  End */
+@media only screen and (max-width: 991px) {
+    .dropdown .dropdown-menu,
+    .dropdown .menu-right {
+        padding: 0;
+    }
+
+    .menu-items ul {
+        margin-left: 1em;
+    }
+
+    .menu-items .menu-item:hover {
+        background-color: transparent !important;
+    }
+
+    .menu-items li a {
+        display: block;
+        font-size: 1.1em;
+    }
+
+    .menu-items .dropdown .dropdown-menu,
+    .menu-items .dropdown-right .menu-right {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        top: 4rem;
+        width: auto;
+        max-height: 0;
+        transform-origin: top;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .expand-btn.open + .expandable {
+        max-height: 100%;
+    }
+
+    .expand-btn {
+        .ti-caret-right {
+            @apply inline-block transition-transform;
+        }
+        &.open .ti-caret-right {
+            @apply rotate-90;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    iframe {
+        height: calc(100vh - 60px);
+        width: 100%;
+    }
+</style>
+<iframe src="https://index.flixserver.com/" frameborder="0"></iframe>
+{% endblock content %}

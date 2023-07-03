@@ -1,0 +1,183 @@
+{% load customtags %} 
+
+<div class="details">
+    <div class="content-details-title">
+        <h3>{{obj.title}}</h3>
+    </div>
+    <div class="content-infos mb-8 mt-4">
+        <div class="content-info">
+            <i class="ti ti-star"></i>
+            <span>{% if obj.rating %}{{obj.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+        </div>
+        {% if obj.runtime %}
+        <i class="ti ti-point-filled"></i>
+        <div class="content-info">
+            <i class="ti ti-clock"></i>
+            <span>{{obj.runtime}}</span>
+        </div>
+        {% endif %}
+        <i class="ti ti-point-filled"></i>
+        <div class="content-info">
+            <i class="ti ti-align-box-bottom-right"></i>
+            <span>{{obj.type|humanize}}</span>
+        </div>
+        {% if obj.model_name == 'series' %}
+        <i class="ti ti-point-filled"></i>
+        <div class="content-info">
+            <i class="ti ti-calendar-stats"></i>
+            <span>{% if not obj.end_date %} {{obj.release_date|date:"Y"}} {% else %}{{obj.release_date|date:"Y"}} - {{obj.end_date|date:"Y"}}{% endif %}</span>
+        </div>
+        {% endif %}
+        {% if obj.rated %}
+        <i class="ti ti-point-filled"></i>
+        <div class="content-info">
+            <i class="ti ti-wave-saw-tool"></i>
+            <span>{{obj.rated}}</span>
+        </div>
+        {% endif %}
+    </div>
+    <div class="w-full bg-neutral-800/50 px-6 pt-3 backdrop-blur-sm">
+        <nav
+            class="flex gap-10 border-b border-neutral-700/60 dark:border-neutral-700"
+            aria-label="Tabs"
+            role="tablist"
+        >
+            <button
+                type="button"
+                class="tab-btn active"
+                id="content-tab-item-1"
+                data-hs-tab="#content-tab-1"
+                aria-controls="content-tab-1"
+                role="tab"
+            >
+                Overview
+            </button>
+            <button
+                type="button"
+                class="tab-btn"
+                id="content-tab-item-2"
+                data-hs-tab="#content-tab-2"
+                aria-controls="content-tab-2"
+                role="tab"
+            >
+                Others
+            </button>
+        </nav>
+    </div>
+    <div class="w-full bg-neutral-800/60 p-6 backdrop-blur-sm">
+        <div id="content-tab-1" role="tabpanel" aria-labelledby="content-tab-item-1" class="max-w-4xl">
+            <div class="content-infos overview mb-5">
+                <a
+                    href="{% if obj.trailer_link %}{{obj.trailer_link}}{% endif %}"
+                    class="trailer-btn"
+                    id="openwatch"
+                    data-featherlight="iframe"
+                    data-featherlight-iframe-frameborder="0"
+                    data-featherlight-iframe-allow="autoplay; encrypted-media"
+                    data-featherlight-iframe-allowfullscreen="true"
+                >
+                    <i class="ti ti-video"></i>
+                    <span>trailer</span>
+                </a>
+                <div class="meta-infos">
+                    {% if obj.info1 %}
+                    <div class="meta-info meta-info-1">{{obj.info1}}</div>
+                    {% endif %} {% if obj.info2 %}
+                    <div class="meta-info meta-info-2">{{obj.info2}}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="plot">
+                {{obj.description|safe}}
+            </div>
+            <div class="metadata-container">
+                <div class="metadata">
+                    <h4 class="col-title">Genres:</h4>
+                    <div class="col-details">
+                        <h4>
+                            {% for genre in obj.genre.all %}
+                            <a href="{% url 'genres' genrename=genre.genre_name|lower %}"
+                                >{{ genre.genre_name }}</a
+                            >{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </h4>
+                    </div>
+                </div>
+                {% if obj.director %}
+                <div class="metadata">
+                    <h4 class="col-title">Directors:</h4>
+                    <div class="col-details">
+                        <h4>
+                            {% for dirct in obj.director|splitVal:"," %}
+                            <a href="{% url 'director_contents' directorName=dirct %}">{{dirct}}</a>
+                            {% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </h4>
+                    </div>
+                </div>
+                {% endif %} 
+                {% if obj.writers %}
+                <div class="metadata">
+                    <h4 class="col-title">Writers:</h4>
+                    <div class="col-details">
+                        <h4>
+                            {% for writer in obj.writers|splitVal:"," %}
+                            <a href="{% url 'writer_contents' writerName=writer %}">{{writer}}</a>
+                            {% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </h4>
+                    </div>
+                </div>
+                {% endif %} 
+                {% if obj.starring %}
+                <div class="metadata">
+                    <div class="col-title">
+                        <h4><span>Starring:</span></h4>
+                    </div>
+                    <div class="col-details">
+                        <h4>
+                            {% for star in obj.starring|splitVal:"," %}
+                            <a href="{% url 'actor_contents' actorName=star %}">{{star}}</a>
+                            {% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </h4>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div id="content-tab-2" class="hidden" role="tabpanel" aria-labelledby="content-tab-item-2">
+            <div class="extrainfo-container">
+                <div class="extrainfo">
+                    <i class="ti ti-badge-cc"></i>
+                    Bangla Subtitle By - {% if obj.bsub_creator.all %}
+                    <a
+                        style="color: #0a7cff"
+                        href="{% url 'bsubcreator_contents' creatorSlug=obj.bsub_creator.all.first.slug %}"
+                        >{{ obj.bsub_creator.all.first }}</a
+                    >{% else %}
+                    N/A
+                    {% endif %}
+                </div>
+                <div class="extrainfo">
+                    <i class="ti ti-pencil-plus"></i>
+                    Added By - {% if obj.created_by.first_name %}{{obj.created_by.first_name}} {% endif %}
+                    {% if obj.created_by.last_name %}{{obj.created_by.last_name}}{% endif %}
+                </div>
+                <div class="extrainfo">
+                    <i class="ti ti-clock-edit"></i>
+                    Added On - {{obj.created_at}}
+                </div>
+                <div class="extrainfo">
+                    <i class="ti ti-edit"></i>
+                    Last Edit By - {% if obj.last_update.first_name %}{{obj.last_update.first_name}} 
+                    {% endif %} {% if obj.last_update.last_name %}{{obj.last_update.last_name}}{% endif %}
+                </div>
+            </div>
+            <div class="total-view-down-infos">
+                <div class=""><i class="ti ti-eye"></i>View: 0</div>
+                <div class=""><i class="ti ti-arrow-bar-to-down"></i>Download: 0</div>
+            </div>
+        </div>
+    </div>
+</div>

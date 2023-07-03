@@ -1,0 +1,94 @@
+
+.content-details {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    isolation: isolate;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -2;
+        background: #0f0f0fa6;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        z-index: -1;
+        top: 200px;
+        background: #101010;
+        background: linear-gradient(180deg, #10101000 0, #101010cc 50%, #101010 100%);
+    }
+}
+
+.content-details-wrapper {
+    @apply relative flex h-full max-h-full w-full flex-col gap-8 md:gap-6 pt-4 md:flex-row lg:gap-10 xl:pt-28;
+
+    .details {
+        @apply flex w-full flex-col p-0;
+
+        .content-details-title {
+            @apply mb-2 text-center text-[calc(1.85vw+10px)] leading-[105%] lg:mb-0 md:text-left lg:text-[calc(1.5vw+10px)];
+        }
+    }
+    .metadata-container {
+        @apply flex flex-col gap-1 divide-y divide-neutral-700/30 mt-4 md:mt-6;
+        a:hover {
+            color: var(--main-color);
+        }
+        .metadata{
+            @apply flex gap-2 pt-1 first:pt-0;
+        }
+        .col-title {
+            @apply text-accent;
+        }
+        .col-details {
+            flex: 1;
+        }
+    }
+    .plot {
+        @apply text-justify w-full text-sm md:text-base;
+    }
+}
+
+.actions-container {
+    @apply flex w-full justify-center md:justify-between;
+}
+
+/* Game Details */
+.extrainfo-container {
+    @apply flex flex-col gap-4 text-sm font-medium;
+    .extrainfo {
+        @apply font-medium;
+    }
+    i {
+        @apply mr-2 text-base text-accent;
+    }
+}
+
+.social-container {
+    @apply flex flex-wrap items-center justify-center gap-4;
+    .tbutton {
+        @apply rounded-sm border-0 px-4 py-2 font-bold no-underline text-sm;
+    }
+    i {
+        margin-right: 0.5em;
+    }
+    .tbutton1 {
+        background-color: #4267b2;
+    }
+    .tbutton2 {
+        background-color: #0088cc;
+    }
+    .tbutton3 {
+        background-color: #ff2929;
+    }
+}

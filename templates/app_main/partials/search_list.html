@@ -1,0 +1,38 @@
+{% if movie_list or series_list %}
+<ul class="w-full h-full divide-y divide-gray-600">
+    {% for item in movie_list %}
+    <li class="w-full">
+        <a href="/details/movie/{{item.slug}}" class="flex items-center px-3 py-1.5 transition-all hover:bg-gray-600">
+            <img src="{{item.tmdb_thumbnail}}" alt="tmdb_thumbnail" class="flex-initial w-7 aspect-[4/6] object-cover">
+            <div class="flex flex-col ml-4">
+                <h3 class="line-clamp-1 text-sm">{{item.title}}</h3>
+                <div class="text-xs capitalize text-gray-300 flex items-center gap-2">
+                    <span>{{item.model}}</span>
+                    <i class="ti ti-point-filled text-[80%]"></i>
+                    <span>{{item.type}}</span>
+                </div>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+    {% for item in series_list %}
+    <li class="w-full">
+        <a href="/details/series/{{item.slug}}" class="flex items-center px-3 py-1.5 transition-all hover:bg-gray-600">
+            <img src="{{item.tmdb_thumbnail}}" alt="tmdb_thumbnail" class="flex-initial w-7 aspect-[4/6] object-cover">
+            <div class="flex flex-col ml-4">
+                <h3 class="line-clamp-1 text-sm">{{item.title}}</h3>
+                <div class="text-xs capitalize text-gray-300 flex items-center gap-2">
+                    <span>{{item.model}}</span>
+                    <i class="ti ti-point-filled text-[80%]"></i>
+                    <span>{{item.type}}</span>
+                </div>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<a class="flex items-center justify-center px-3 py-2 transition-all hover:bg-gray-600">
+    <h3 class="line-clamp-1 text-sm ml-4">No content found!</h3>
+</a>
+{% endif %}

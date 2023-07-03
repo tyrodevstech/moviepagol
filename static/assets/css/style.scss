@@ -1,0 +1,131 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "./_base.scss";
+@import "./_buttons.scss";
+@import "./_components.scss";
+@import "./_global.scss";
+@import "./_navbar.scss";
+@import "./_slider.scss";
+@import "./_modal.scss";
+@import "./_footer.scss";
+@import "./_responsive.scss";
+@import "./_content_details.scss";
+@import "./_miscellaneous.scss";
+@import "./_dropdown.scss";
+
+
+.software-games-extra-main {
+    .descript .col-12 {
+        white-space: pre-line;
+    }
+
+    .extrainfo-container {
+        .col-12 {
+            background-color: #6868688c;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+
+/* Details Page ------------------------------------ */
+
+/* End Pagination */
+
+.content p {
+    width: 65%;
+    padding: 1rem 0;
+    line-height: 18px;
+}
+
+
+
+.menu-items-part-container {
+    display: flex;
+}
+
+.menu-items-part {
+    width: 100%;
+}
+
+.main-navitem-icon {
+    display: none !important;
+}
+
+
+
+.nav {
+    ::-webkit-scrollbar {
+        width: 3px;
+    }
+}
+
+
+// .see-more-btn {
+//     display: none;
+//     position: absolute;
+//     text-align: center;
+//     z-index: 1;
+//     left: 50%;
+//     bottom: -10px;
+//     transform: translate(-50%, 0);
+
+//     font-size: 1.25rem;
+//     background: transparent;
+//     color: #fff;
+//     border: none;
+//     cursor: pointer;
+
+//     i {
+//         margin-right: 0.5rem;
+//     }
+// }
+
+// .descript-hidden {
+//     &::after {
+//         content: "";
+//         position: absolute;
+//         left: 0;
+//         bottom: -20px;
+//         width: 100%;
+//         height: 70px;
+//         background: rgb(0, 0, 0);
+//         background: linear-gradient(
+//             0deg,
+//             rgba(0, 0, 0, 0.8) 10%,
+//             rgba(0, 0, 0, 0.7) 25%,
+//             rgba(0, 0, 0, 0.8435749299719888) 35%,
+//             rgba(0, 0, 0, 0.7035189075630253) 50%,
+//             rgba(255, 255, 255, 0) 100%
+//         );
+//     }
+
+//     .see-more-btn {
+//         display: block;
+//     }
+// }
+
+// .descript-expand {
+//     &::after {
+//         content: none;
+//     }
+
+//     .col-12 {
+//         transition: all 0.5s ease;
+//         max-height: 100% !important;
+//         overflow: visible !important;
+//     }
+
+//     .see-more-btn {
+//         display: block;
+//         bottom: -25px;
+
+//         i {
+//             transition: all 0.3s ease;
+//             transform: rotate(180deg);
+//         }
+//     }
+// }

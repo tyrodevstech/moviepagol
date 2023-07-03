@@ -1,0 +1,135 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% load customtags %}
+{% block title %}Oscar Winning - Movies | Movie Pagol{% endblock title %}
+
+{% block twittertitle %}Oscar Winning - Movies | Movie Pagol{% endblock twittertitle %}
+
+{% block ogtitle %}Oscar Winning - Movies | Movie Pagol{% endblock ogtitle %}
+
+{% block ogtype %}oscarwinning{% endblock ogtype%}
+
+{% block content %}
+
+<div class="section" style="max-width: 1920px; margin: 0 auto;">
+    <div class="container">
+        <div class="section-header">
+            <h3>oscar winning - movies</h3>
+            <div class="totalobj">
+                <span class="total">Total - {{totalobj}}</span>
+            </div>
+        </div>
+        <div class="all-contents">
+            <!-- MOVIE ITEM -->
+            {% for i in oscarwinningmovies %}
+            <a href="{% url 'details_movie' pk=i.movie_content.slug %}" class="all-content-item">
+                {% if i.movie_content.info1 %}
+                <div class="info1">
+                    {{i.movie_content.info1}}
+                </div>
+                {% endif %}
+                {% if i.movie_content.info2 %}
+                <div class="info2">
+                    {{i.movie_content.info2}}
+                </div>
+                {% endif %}
+                <div class="card-overlay"></div>
+                <img src="{% if i.movie_content.tmdb_thumbnail %}{{i.movie_content.tmdb_thumbnail}}{% elif i.movie_content.thumbnail %}{{i.movie_content.thumbnail.url}}{% endif %}"
+                    alt="thumbnail" loading="lazy">
+                <div class="slide-item__content">
+                    <div class="slide-item__title">
+                        {{i.movie_content.title}}
+                    </div>
+                    <div class="content-infos">
+                        <div class="content-info">
+                            <i class="ti ti-star"></i>
+                            <span>{{i.movie_content.rating}}</span>
+                        </div>
+                        <div class="content-info">
+                            <i class="ti ti-clock"></i>
+                            <span>{{i.movie_content.runtime}}</span>
+                        </div>
+                        <div class="content-info">
+                            <i class="ti ti-align-box-bottom-right"></i>
+                            <span>{{i.movie_content.type|humanize}}</span>
+                        </div>
+                        {% if i.movie_content.rated %}
+                        <div class="content-info">
+                            <i class="ti ti-wave-saw-tool"></i>
+                            <span>{{i.movie_content.rated}}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <ul class="pagination justify-content-center">
+        {% if oscarwinningmovies.number != 1 %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+        </li>
+        {% endif %}
+        {% if oscarwinningmovies.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ oscarwinningmovies.previous_page_number }}">&lsaquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&lsaquo;</a>
+        </li>
+        {% endif %}
+
+        {% if oscarwinningmovies.number|add:'-4' > 1 %}
+        <li class="page-item"><a class="page-link" href="?page={{ oscarwinningmovies.number|add:'-5' }}">&hellip;</a>
+        </li>
+        {% endif %}
+
+        {% for i in oscarwinningmovies.paginator.page_range %}
+        {% if oscarwinningmovies.number == i %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% elif i > oscarwinningmovies.number|add:'-5' and i < oscarwinningmovies.number|add:'5' %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if oscarwinningmovies.paginator.num_pages > oscarwinningmovies.number|add:'4' %}
+        <li class="page-item"><a class="page-link" href="?page={{ oscarwinningmovies.number|add:'5' }}">&hellip;</a>
+        </li>
+        {% endif %}
+
+        {% if oscarwinningmovies.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ oscarwinningmovies.next_page_number }}">&rsaquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&rsaquo;</a>
+        </li>
+        {% endif %}
+        {% if oscarwinningmovies.number != oscarwinningmovies.paginator.num_pages %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ oscarwinningmovies.paginator.num_pages }}">&raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+<!--end of Pagination-->
+
+{% endblock content %}

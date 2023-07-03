@@ -1,0 +1,520 @@
+{% extends 'app_main/base.html' %}
+{% load static %} 
+{% load customtags %} 
+{% block title %}Movie Pagol | Watch & Download Movies,TV-Series{% endblock title%} 
+{% block twittertitle %}Movie Pagol | Watch & Download Movies,TV-Series{% endblock twittertitle %} {% block ogtitle %}Movie Pagol | Watch & Download Movies,TV-Series{% endblock ogtitle %} 
+{% block ogtype %}home{% endblock ogtype%} {% block content %}
+<!-- HERO SECTION -->
+<div class="hero-section">
+    <!-- HERO SLIDE -->
+    <div class="hero-slide">
+        <div class="splide" id="heroslider_content">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    {% for i in topsliderobjs %}
+                        {% include 'app_main/components/slider/hero_slider_item.html' %}
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- END HERO SLIDE -->
+
+    <!-- TOP MOVIES SLIDE -->
+    <div class="top-movies-slide">
+        <div class="splide topslider__content" id="topslider__content">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    {% for i in topmovieobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">{{i.title}}</div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.type|humanize}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- END TOP MOVIES SLIDE -->
+</div>
+<!-- END HERO SECTION -->
+
+<div class="container mt-6">
+    <div class="acme-news-ticker flex gap-4 bg-neutral-800 text-white">
+        <div class="flex flex-1 gap-4 py-2">
+            <span class="flex items-center pl-4 font-semibold text-blue-400">Updates</span>
+            <span class="h-4 w-px self-center bg-neutral-500"></span>
+            <div class="flex-1 overflow-hidden text-left text-sm">
+                <ul class="news-ticker flex h-full items-center justify-start">
+                    {% for notice in notices %}
+                    <li>
+                        <a class="line-clamp-1" {% if notice.link %}href="{{notice.link}}" {% endif %}>{{notice.title}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="acme-news-ticker-controls acme-news-ticker-horizontal-controls flex divide-x divide-neutral-600">
+            <button class="acme-news-ticker-arrow acme-news-ticker-prev bg-neutral-700 px-1">
+                <i class="ti ti-chevron-left"></i>
+            </button>
+            <button class="acme-news-ticker-arrow acme-news-ticker-next bg-neutral-700 px-1">
+                <i class="ti ti-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- BSUB MOVIES SECTION -->
+<div class="section pt-0">
+    <div class="container">
+        {% url 'bsub' as bsub_url %}{% include 'app_main/components/section-header.html' with title="bsub movies" total_count=bsub_count see_all_url=bsub_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in bsubobjs %} {% if i %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.movie_content.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.movie_content.info1 %}
+                            <div class="info1">{{i.movie_content.info1}}</div>
+                            {% endif %} {% if i.movie_content.info2 %}
+                            <div
+                                class="absolute right-2 top-2 z-10 rounded-sm bg-white px-1.5 py-0.5 text-sm font-semibold text-gray-700">
+                                {{i.movie_content.info2}}
+                            </div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img class="owl-lazy"
+                                data-splide-lazy="{% if i.movie_content.tmdb_thumbnail %}{{i.movie_content.tmdb_thumbnail}}{% elif i.movie_content.thumbnail %}{{i.movie_content.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.movie_content.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{{i.movie_content.rating}}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.movie_content.type|humanize}}</span>
+                                    </div>
+                                    {% if i.movie_content.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.movie_content.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endif %} {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END BSUB MOVIES SECTION -->
+
+<!-- HINDI MOVIES SECTION -->
+<div class="section">
+    <div class="container">
+        {% url 'movies' type='hindi' as hindi_movies_url %}{% include 'app_main/components/section-header.html' with title="hindi movies" total_count=hindimovies_count see_all_url=hindi_movies_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in hindimovieobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END HINDI MOVIES SECTION -->
+
+<!-- SOUTH INDIAN MOVIES SECTION -->
+<div class="section">
+    <div class="container">
+        {% url 'movies' type='south_indian' as south_indian_movies_url %}{% include 'app_main/components/section-header.html' with title="south indian movies" total_count=southmovies_count see_all_url=south_indian_movies_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in southmovieobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.type|humanize}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END SOUTH INDIAN MOVIES SECTION -->
+
+<!-- ENGLISH MOVIES SECTION -->
+<div class="section">
+    <div class="container">
+        {% url 'movies' type='english' as english_movies_url %}{% include 'app_main/components/section-header.html' with title="english movies" total_count=engmovies_count see_all_url=english_movies_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in engmovieobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-clock"></i>
+                                        <span>{{i.runtime}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END ENGLISH MOVIES SECTION -->
+
+<!-- FOREIGN MOVIES SECTION -->
+<div class="section">
+    <div class="container">
+        {% url 'movies' type='foreign' as foreign_movies_url %}{% include 'app_main/components/section-header.html' with title="foreign movies" total_count=frgmovies_count see_all_url=foreign_movies_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in frgmovieobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.type|humanize}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END FOREIGN MOVIES SECTION -->
+
+<!-- KDARAMA SECTION -->
+<div class="section">
+    <div class="container">
+        {% url 'series' type='korean' as kdramas_url %}{% include 'app_main/components/section-header.html' with title="k-dramas" total_count=kdrama_count see_all_url=kdramas_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in kdramaobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_series' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-calendar-stats"></i>
+                                        <span>{% if not i.end_date %} {{i.release_date|date:"Y"}} {% else %}
+                                            {{i.release_date|date:"Y"}} - {{i.end_date|date:"Y"}} {% endif %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END SERIES SECTION -->
+
+<!-- SERIES SECTION -->
+<div class="section">
+    <div class="container">
+        {% url 'series' type='all' as series_url %}{% include 'app_main/components/section-header.html' with title="tv & web series" total_count=series_count see_all_url=series_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in seriesobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_series' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-align-box-bottom-right"></i>
+                                        <span>{{i.type|humanize}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END SERIES SECTION -->
+
+<!-- ANIMATIONS SECTION -->
+<div class="section">
+    <div class="container">
+        {% url 'movies' type='animation' as animation_url %}{% include 'app_main/components/section-header.html' with title="animations" total_count=animation_count see_all_url=animation_url only %}
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in animationobjs %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_movie' pk=i.slug %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            {% if i.info1 %}
+                            <div class="info1">{{i.info1}}</div>
+                            {% endif %} {% if i.info2 %}
+                            <div class="info2">{{i.info2}}</div>
+                            {% endif %}
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.tmdb_thumbnail %}{{i.tmdb_thumbnail}}{% elif i.thumbnail %}{{i.thumbnail.url}}{% endif %}"
+                                alt="thumbnail" />
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.title}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-star"></i>
+                                        <span>{% if i.rating %}{{i.rating|floatformat:1}}{% else %}N/A{% endif %}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-clock"></i>
+                                        <span>{{i.runtime}}</span>
+                                    </div>
+                                    {% if i.rated %}
+                                    <div class="content-info">
+                                        <i class="ti ti-wave-saw-tool"></i>
+                                        <span>{{i.rated}}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END ANIMATIONS SECTION -->
+
+{% endblock content %}

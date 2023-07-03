@@ -1,0 +1,15 @@
+.acmeticker-wrap{
+    @apply w-full h-full;
+}
+.totalobj {
+    @apply text-xs leading-none whitespace-nowrap ml-2;
+    a {
+        @apply ml-2 rounded-sm px-2.5 py-0.5 uppercase;
+        background-color: var(--main-color);
+    }
+    .total {
+        @apply rounded-sm px-2.5 py-0.5;
+        background-color: var(--main-color);
+    }
+    
+}

@@ -1,0 +1,59 @@
+{% load static %} 
+
+<!-- Footer -->
+<footer class="py-6 sm:py-14">
+    <div class="container">
+        <div class="flex flex-col gap-6 sm:flex-row md:gap-10 lg:gap-16 flex-wrap">
+            <div class="mx-auto sm:mx-0">
+                <a href="/" class="logo">
+                    <img src="{% static 'moviepagol-logo.png' %}" alt="moviepagol-logo" class="brand-logo w-40" />
+                </a>
+                <div class="social-list justify-center sm:justify-start">
+                    <a href="https://www.facebook.com/groups/1308634456650394/" target="_blank" class="social-item">
+                        <i class="ti ti-brand-facebook"></i>
+                    </a>
+                    <a href="https://www.twitter.com/moviepagol" target="_blank" class="social-item">
+                        <i class="ti ti-brand-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/moviepagol" target="_blank" class="social-item">
+                        <i class="ti ti-brand-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="flex-1 text-sm">
+                <p class="mb-4 text-gray-300 text-justify">
+                    Movie Pagol is an online video streaming & downloading platform that offers a wide variety of TV
+                    series, movies, anime, documentaries, apps & games and more from here & around the world. All
+                    our content are uploaded in "Google Drive", "One Drive" link. So, you can download easily from
+                    our website. This is Movie Pagol, let's play.
+                </p>
+                <ul class="footer-menu flex flex-wrap gap-2 justify-center sm:justify-start">
+                    <li><a href="{% url 'aboutus' %}">About us</a></li>
+                    <span class="text-gray-400">-</span>
+                    <li><a href="{% url 'privacy' %}">Privacy policy</a></li>
+                    <span class="text-gray-400">-</span>
+                    <li><a href="{% url 'contactus' %}">Contact us</a></li>
+                    <span class="text-gray-400">-</span>
+                    <li><a href="https://searcheverything.net">Search Everything</a></li>
+                </ul>
+            </div>
+            <div class="text-xs md:max-w-xs md:flex-1">
+                <p class="border p-4">
+                    Movie Pagol does not store any files on our server, we only linked to the media which is hosted
+                    on 3rd party services.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer  -->
+
+<!-- Copyright  -->
+<div class="copyright border-t border-t-gray-800 p-2 text-center text-sm">
+    &copy; Copyright 2021 -
+    <script>
+        document.write(new Date().getFullYear());
+    </script>
+    <a href="/" target="_blank">moviepagol.com</a>
+</div>
+<!-- End Copyright -->

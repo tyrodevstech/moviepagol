@@ -1,0 +1,141 @@
+/* RESPONSIVE */
+@media only screen and (min-width: 1536px) {
+    .item-content-description {
+        line-height: 1.65rem;
+    }
+
+    .pagination-lg .page-link {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+
+    .bsubmaker-container .splide {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    // html {
+    //     font-size: 15px;
+    // }
+
+    .hero-slide-item {
+        padding-top: 50%;
+    }
+
+    /* .item-content-wraper {
+        width: 50%;
+    } */
+}
+
+@media only screen and (max-width: 1024px) {
+    :root {
+        --space-top: 10px;
+        --content-details-title: 2rem;
+    }
+
+    html {
+        font-size: 90%;
+    }
+
+    .section {
+        padding-top: 50px;
+    }
+
+    .top-movies-slide {
+        padding-top: 50px;
+    }
+
+   
+    .content-details-wrapper {
+        .descript {
+            // min-height: 100%;
+            // height: auto;
+            padding: 0;
+            margin-bottom: 2rem;
+
+            .col-12 {
+                max-height: 130px;
+            }
+        }
+    }
+
+    .social {
+        right: 15px;
+        top: 50px;
+    }
+
+    #watchModal {
+        padding: 0 1.5rem !important;
+
+        .trailer-section {
+            padding: 0;
+
+            iframe {
+                height: 40vh;
+                min-height: 350px;
+            }
+        }
+    }
+
+    .menu-items-part-container {
+        flex-direction: column;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .all-content-item {
+        .slide-item__content {
+            padding: 5px;
+            font-size: 1.075rem;
+        }
+    }
+
+    .extrainfo-container {
+        .extrainfo-1 {
+            width: 100%;
+        }
+
+        .extrainfo-2 {
+            width: 100%;
+            margin: 0;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .section-header {
+        font-size: 1.4rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    html {
+        font-size: 85%;
+    }
+
+    .nav {
+        padding: 0 15px;
+    }
+
+    .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .item-content-wraper {
+        min-height: 280px;
+        padding: 2rem 3rem 3.5rem;
+    }
+
+    #watchModal .trailer-section iframe {
+        height: 30vh;
+    }
+}

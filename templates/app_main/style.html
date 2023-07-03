@@ -1,0 +1,9 @@
+<style>
+    .content-details {
+        background: url('{% if obj.tmdb_poster %}{{obj.tmdb_poster}}{% elif obj.tmdb_thumbnail %}{{obj.tmdb_thumbnail}}{% elif obj.poster %}{{obj.poster.url}}{% elif obj.thumbnail %}{{ obj.thumbnail.url }}{% endif %}') no-repeat center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>

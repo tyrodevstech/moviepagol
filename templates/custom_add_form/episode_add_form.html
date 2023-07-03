@@ -1,0 +1,162 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; {% if has_view_permission %}<a
+        href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+    &rsaquo; {% if add %}{% blocktranslate with name=opts.verbose_name %}Add
+    {{ name }}{% endblocktranslate %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}<div id="content-main">
+    {% block object-tools %}
+    {% if change %}{% if not is_popup %}
+    <ul class="object-tools">
+        {% block object-tools-items %}
+        {% change_form_object_tools %}
+        {% endblock %}
+    </ul>
+    {% endif %}{% endif %}
+    {% endblock %}
+    <div class="tmdbapi_container">
+        <h2> Select a season and enter episode number then fetch</h2>
+
+        <input type="button" class="btn btn-primary ms-2" id="fetchInfosBtn" value="Fetch"></input>
+
+    </div>
+
+    <style>
+        .tmdbapi_container {
+            margin-bottom: 2rem;
+            background-color: rgb(229 236 255);
+            padding: 0.5rem 1rem 1rem;
+            border-radius: 0.28571rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-weight: normal;
+        }
+
+        .tmdbapi_container h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        #fetchInfosBtn {
+            margin-left: 1rem;
+            overflow: visible;
+
+        }
+    </style>
+    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}"
+        {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
+        {% csrf_token %}{% block form_top %}{% endblock %}
+        <div>
+            {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+            {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+            {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+            {% if errors %}
+            <p class="errornote">
+                {% if errors|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}
+            </p>
+            {{ adminform.form.non_field_errors }}
+            {% endif %}
+
+            {% block field_sets %}
+            {% for fieldset in adminform %}
+            {% include "admin/includes/fieldset.html" %}
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_field_sets %}{% endblock %}
+
+            {% block inline_field_sets %}
+            {% for inline_admin_formset in inline_admin_formsets %}
+            {% include inline_admin_formset.opts.template %}
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_related_objects %}{% endblock %}
+
+            {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+
+            {% block admin_change_form_document_ready %}
+            <script id="django-admin-form-add-constants" src="{% static 'admin/js/change_form.js' %}"
+                {% if adminform and add %} data-model-name="{{ opts.model_name }}" {% endif %} async>
+            </script>
+            {% endblock %}
+
+            {# JavaScript for prepopulated fields #}
+            {% prepopulated_fields_js %}
+
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block tmdbfetch %}
+<script>
+    apiKey = 'c922683661639d2817db046e73983d60';
+
+    function timeConvert(n) {
+        var num = n;
+        var hours = (num / 60);
+        var rhours = Math.floor(hours);
+        var minutes = (hours - rhours) * 60;
+        var rminutes = Math.round(minutes);
+        return rhours + "h " + rminutes + "min";
+    }
+
+    $("#fetchInfosBtn").on('click', function () {
+        seasonId = $('#id_season').val()
+        let epNum = parseInt($('#id_episode').val())
+        if (epNum > 0) {
+            fetch(`/api/getSeasonModelData/${seasonId}`).then(res => res.json()).then(data => {
+                if (data.status == 1) {
+                    fetch(
+                            `https://api.themoviedb.org/3/tv/${data.seriesTmdbId}/season/${data.seasonNum}/episode/${epNum}?api_key=${apiKey}`
+                        )
+                        .then(response => response.json())
+                        .then(data => {
+                            $('#id_title').val(data.name)
+                            $('#id_description').val(data.overview)
+                            $('#id_rating').val(data.vote_average ? data.vote_average.toFixed(1) :
+                                null)
+                            $('#id_tmdb_thumbnail').val((data.still_path) ?
+                                'https://image.tmdb.org/t/p/w300' +
+                                data.still_path : null)
+
+                        }).catch((error) => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    alert('season or series tmdb id not found !!!')
+                }
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+
+        } else {
+            alert("Select Season and Enter episode number correctly !!!")
+        }
+    });
+</script>
+{% endblock tmdbfetch %}

@@ -1,0 +1,26 @@
+select[multiple] {
+    min-height: 10rem;
+    height: max-content;
+}
+
+#id_user_permissions,
+#id_permissions {
+    min-height: 20rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+textarea,
+select,
+.vTextField {
+    border: 0.07143rem solid #e0e0e0 !important;
+}
+
+
+
+.select2-container--jet .select2-selection--single {
+    height: 2.28571rem !important;
+}

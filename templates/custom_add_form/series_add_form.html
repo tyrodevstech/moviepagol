@@ -1,0 +1,347 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; {% if has_view_permission %}<a
+        href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+    &rsaquo; {% if add %}{% blocktranslate with name=opts.verbose_name %}Add
+    {{ name }}{% endblocktranslate %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}<div id="content-main">
+    {% block object-tools %}
+    {% if change %}{% if not is_popup %}
+    <ul class="object-tools">
+        {% block object-tools-items %}
+        {% change_form_object_tools %}
+        {% endblock %}
+    </ul>
+    {% endif %}{% endif %}
+    {% endblock %}
+    <div class="tmdbapi_container">
+        <h2> Search Series and select for fetch</h2>
+        <div class="inputContainer">
+            {% csrf_token %}
+            <input type="text" class="form-control" id="contentTitleInput" placeholder="Search by 'Title' or 'TMDbID'"
+                data-cid="">
+            <input type="button" class="btn btn-primary ms-2" id="fetchInfosBtn" value="Fetch"></input>
+        </div>
+        <ul class="list-group list-group-flush card" id="contentsList"></ul>
+        <div id="selectedContent"></div>
+    </div>
+
+    <style>
+        .select2-container:nth-child(2) {
+            width: max-content !important;
+            border: 0.07143rem solid #e0e0e0 !important;
+            border-radius: 0.28571rem;
+            max-width: 300px;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            min-height: 2.28571rem;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            border: none !important;
+            min-height: auto !important;
+        }
+
+        textarea.select2-search__field {
+            min-width: 11rem;
+            border: none !important;
+        }
+
+        .tmdbapi_container {
+            margin-bottom: 2rem;
+            background-color: rgb(229 236 255);
+            padding: 0.5rem 1rem 1rem;
+            border-radius: 0.28571rem;
+        }
+
+        .tmdbapi_container h2 {
+            margin: 0;
+            margin-bottom: 0.5rem;
+            padding: 0;
+        }
+
+        .inputContainer {
+            display: flex;
+            align-items: center;
+        }
+
+        #contentTitleInput {
+            flex-grow: 1;
+        }
+
+        #fetchInfosBtn {
+            margin-left: 1rem;
+        }
+
+        #contentsList img,
+        #selectedContent img {
+            height: 45px;
+            width: 30px;
+            margin-right: 1rem;
+        }
+
+        .tmdbapi_container #selectedContent,
+        .tmdbapi_container #contentsList {
+            display: none;
+            margin-top: 1rem;
+            padding: 0;
+            max-height: 300px;
+            overflow: auto;
+            border: 3px solid #fff;
+            border-radius: 0.28571rem;
+            box-shadow: 0px 2px 2px 1px #3333333b;
+        }
+
+        .tmdbapi_container li {
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            background-color: #fcfcfc;
+        }
+
+        .tmdbapi_container li span {
+            margin: 0 0.5rem 0 0.25rem;
+        }
+
+        .tmdbapi_container #contentsList li {
+            box-shadow: 0px 1px 3px 1px #dadada;
+            background-color: #fcfcfc;
+        }
+
+        #contentsList li:hover {
+            cursor: pointer;
+            background-color: #424d5f;
+            transition: 0.3s all ease;
+            color: #fff;
+        }
+    </style>
+    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}"
+        {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
+        {% csrf_token %}{% block form_top %}{% endblock %}
+        <div>
+            {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+            {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+            {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+            {% if errors %}
+            <p class="errornote">
+                {% if errors|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}
+            </p>
+            {{ adminform.form.non_field_errors }}
+            {% endif %}
+
+            {% block field_sets %}
+            {% for fieldset in adminform %}
+            {% include "admin/includes/fieldset.html" %}
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_field_sets %}{% endblock %}
+
+            {% block inline_field_sets %}
+            {% for inline_admin_formset in inline_admin_formsets %}
+            {% include inline_admin_formset.opts.template %}
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_related_objects %}{% endblock %}
+
+            {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+
+            {% block admin_change_form_document_ready %}
+            <script id="django-admin-form-add-constants" src="{% static 'admin/js/change_form.js' %}"
+                {% if adminform and add %} data-model-name="{{ opts.model_name }}" {% endif %} async>
+            </script>
+            {% endblock %}
+
+            {# JavaScript for prepopulated fields #}
+            {% prepopulated_fields_js %}
+
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block tmdbfetch %}
+<script>
+    searchedOutput = ''
+    apiKey = 'c922683661639d2817db046e73983d60'
+    var genres = document.getElementById("id_genre");
+    const genresOptions = Array.from(genres.options);
+
+    function timeConvert(n) {
+        var num = n;
+        var hours = (num / 60);
+        var rhours = Math.floor(hours);
+        var minutes = (hours - rhours) * 60;
+        var rminutes = Math.round(minutes);
+        return rhours + "h " + rminutes + "min";
+    }
+
+    function CreateSearchedOutput(item, index) {
+        searchedOutput +=
+            `<li data-cid=${item['id']} class="list-group-item"><img src="https://image.tmdb.org/t/p/w300${item['poster_path']}" alt=""><span class="title">${item['name']}</span><span class="rlsdate"> (${item['first_air_date']})</span></li>`
+    }
+    $("#contentTitleInput").on('keyup', function () {
+        let title = $(this).val();
+        url = `https://api.themoviedb.org/3/tv/${title}?api_key=${apiKey}`
+        if (title.length >= 2) {
+            fetch(url).then(response => response.json()).then(item => {
+                if (item['id']) {
+                    searchedOutput +=
+                        `<li data-cid=${item['id']} class="list-group-item"><img
+                    src="https://image.tmdb.org/t/p/w300${item['poster_path']}" alt=""><span
+                    class="title">${item['name']}</span><span class="rlsdate"> (${item['first_air_date']})</span></li>`
+                }
+            })
+            dataDict = {
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                'contentTitle': title
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/api/getSearchTMDBSeriesData',
+                data: dataDict,
+                success: function (data) {
+                    if (data.status == 1) {
+                        data.contentsInfos.forEach(CreateSearchedOutput)
+                        $('#contentsList').show().html(searchedOutput)
+                        searchedOutput = ''
+                    }
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#contentsList li', function () {
+        cnID = $(this).data('cid')
+        title = $(this).children('span.title').text()
+        $('#contentTitleInput').val(title)
+        $('#contentTitleInput').attr('data-cid', cnID)
+        $('#selectedContent').html($(this).append(
+                '<span style="color:#15cc15;">selected &#10003;</span>'))
+            .show()
+        $('#contentsList').empty().hide()
+    })
+
+    $("#fetchInfosBtn").on('click', function () {
+        let cnID = $('#contentTitleInput').attr('data-cid')
+        if (cnID) {
+            fetch(
+                    `https://api.themoviedb.org/3/tv/${cnID}?api_key=${apiKey}&append_to_response=credits,videos`
+                )
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+
+                    let title = data.name + " (" + data.first_air_date.split('-')[0] + ")"
+                    $('#id_tmdbid').val(data.id)
+                    $('#id_slug').val(slugify(title,{remove: /[*+~.()'"!:@]/g,lower:true}))
+                    $('#id_title').val(title)
+                    $('#id_description').val(data.overview)
+                    $('#id_rating').val(data.vote_average)
+                    $('#id_release_date').val(data.first_air_date)
+                    $('#id_end_date').val(data.last_air_date)
+                    $('#id_tmdb_poster').val('https://image.tmdb.org/t/p/w1280' + data.backdrop_path)
+                    $('#id_tmdb_thumbnail').val('https://image.tmdb.org/t/p/w300' + data.poster_path)
+                    $('#id_genre').val('').trigger("change");
+
+
+                    starring = []
+                    writers = []
+                    directors = []
+                    data.credits.cast.forEach(function (item, index) {
+                        if (item['known_for_department'] == "Acting" && index <= 10) {
+                            starring.push(item['name'])
+                        } else if (item['known_for_department'] == "Writing") {
+                            writers.push(item['name'])
+                        } else if (item['known_for_department'] == "Directing") {
+                            directors.push(item['name'])
+                        }
+                    })
+                    data.credits.crew.forEach(function (item, index) {
+                        if (item['known_for_department'] == "Directing") {
+                            directors.push(item['name'])
+                        } else if (item['known_for_department'] == "Writing") {
+                            writers.push(item['name'])
+                        }
+                    })
+                    starring = starring.filter(function (value, index) {
+                        return starring.indexOf(value) == index
+                    })
+                    writers = writers.filter(function (value, index) {
+                        return writers.indexOf(value) == index
+                    })
+                    directors = directors.filter(function (value, index) {
+                        return directors.indexOf(value) == index
+                    })
+
+                    data.videos.results.every(function (item, index) {
+                        if (item['type'] == "Trailer" && item['site'] == "YouTube" && item[
+                                'official'] == true) {
+                            $('#id_trailer_link').val('https://www.youtube.com/embed/' + item[
+                                'key'])
+                            return false
+                        } else if (item['type'] == "Trailer" && item['site'] == "YouTube" &&
+                            item[
+                                'official'] == false) {
+                            $('#id_trailer_link').val('https://www.youtube.com/embed/' + item[
+                                'key'])
+                            return false
+                        }
+                        return true;
+                    })
+                    $('#id_starring').val(starring.join(', '))
+                    $('#id_writers').val(writers.join(', '))
+                    $('#id_director').val(directors.join(', '))
+                    genresOptions.forEach(function (item1, index) {
+                        data.genres.forEach(function (item2) {
+                            item2['name'].split("&").forEach(function (item3) {
+                                // console.log(item3.trim())
+                                item3 = item3.trim()
+                                if (item3 == item1.text) {
+                                    genres.options[index].selected = 'true'
+                                }
+                                if (item3 == "Sci-Fi" && item1.text ==
+                                    "Science Fiction") {
+                                    genres.options[index].selected = 'true'
+                                }
+                            })
+                        })
+                    })
+                    $('#id_genre').select2();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        } else {
+            alert("Select a movie first !!!")
+        }
+    });
+    $(document).ready(function () {
+        $('#id_genre').select2({
+            placeholder: "Select genres",
+        });
+    });
+</script>
+{% endblock tmdbfetch %}

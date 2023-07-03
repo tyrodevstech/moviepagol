@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head {% block ehead %}{% endblock ehead%}>
+        {% block extrahead %}{% endblock extrahead %}
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="{% static 'favicon.png' %}" type="image/png" sizes="20x20" />
+        <title>{% block title %}{% endblock title %}</title>
+        <meta name="robots" content="index,follow,noarchive" />
+        <meta
+            name="description"
+            content="{% block description %}Movie Pagol is an online video streaming & downloading platform that offers a wide variety of TV
+            series, movies, anime, documentaries, apps & games and more from here & around the world. All our content are uploaded
+            in Google Drive, One Drive link. So, you can download easily from our website. This is Movie Pagol, let's
+            play.{% endblock description %}"
+        />
+        <meta name="keywords" content="" />
+        <meta name="author" content="" />
+        <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="{% block twittertitle %}{% endblock twittertitle %}" />
+        <meta
+            name="twitter:description"
+            content="{% block twitterdescription %}Movie Pagol is an online video streaming & downloading platform that offers a wide variety of TV
+            series, movies, anime, documentaries, apps & games and more from here & around the world. All our content are uploaded
+            in Google Drive, One Drive link. So, you can download easily from our website. This is Movie Pagol, let's
+            play.{% endblock twitterdescription %}"
+        />
+        <meta property="twitter:site" content="{{ request.get_host }}" />
+        <meta property="twitter:domain" content="{{ SITE_URL }}" />
+        <meta
+            property="twitter:image:src"
+            content="{% block twitterimg %}{% static 'moviepagol.jpg' %}{% endblock twitterimg %}"
+        />
+
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:title" content="{% block ogtitle %}{% endblock ogtitle %}" />
+        <meta property="og:image:width" content="300" />
+        <meta property="og:image:height" content="425" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:site_name" content="Movie Pagol | Watch & Download Movies,TV-Series" />
+        <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+        <meta property="og:type" content="{% block ogtype %}{% endblock ogtype%}" />
+        <meta
+            property="og:description"
+            content="{% block ogdescription %}Movie Pagol is an online video streaming & downloading platform that offers a wide variety of TV
+            series, movies, anime, documentaries, apps & games and more from here & around the world. All our content are uploaded
+            in Google Drive, One Drive link. So, you can download easily from our website. This is Movie Pagol, let's
+            play.{% endblock ogdescription %}"
+        />
+        <meta property="og:image" content="{% block ogimage %}{% static 'moviepagol.jpg' %}{% endblock ogimage %}" />
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="robots" content="max-image-preview:large" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+            rel="stylesheet"
+        />
+        <!-- Fancybox -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+        <!-- APP CSS -->
+        <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <link rel="stylesheet" href="{% static 'vendor/splide/splide.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+        {% include 'app_main/style.html' %}
+
+        <script
+            src="https://unpkg.com/htmx.org@1.9.2"
+            integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://unpkg.com/hyperscript.org@0.9.8"></script>
+        <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    </head>
+
+    <body>
+        <div class="main">
+            {% include 'app_main/components/nav.html' %} 
+            {% block content %} {% endblock content %} 
+            {% include 'app_main/components/footer.html' %}
+        </div>
+
+        <!-- back to top -->
+        <span class="btp-container" id="btpbutton"><i class="ti ti-chevron-up"></i></span>
+
+        <div class="modal-container modal-overlay">
+            <div class="modal">
+                <span class="close-modal">&times;</span>
+                <div class="modal-content">
+                    <h1>Welcome to Movie Pagol</h1>
+                    <br />
+                    <h3>This site is being developed regularly to improve user experience</h3>
+                    <br />
+                    <p>
+                        Please clear your browser cache often for latest design and feature and inform us for any
+                        problem. It will help us to improve user experience and site.
+                    </p>
+                    <br />
+                    <h5>To clear cache ( CTRL + F5 on browser for pc ) ( Browser app info > clear cache for mobile)</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script -->
+        <!-- Jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- Fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+        <!-- APP SCRIPT -->
+        <script src="{% static 'vendor/acmeticker/acmeticker.min.js' %}"></script>
+        <script src="{% static 'vendor/splide/splide.min.js' %}"></script>
+        <script src="{% static 'assets/js/slider.js' %}"></script>
+        <script src="{% static 'assets/js/app.js' %}"></script>
+        <!-- <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6271566c12face50"></script> -->
+        {% block script %} {% endblock script %}
+        <!-- End Script -->
+
+        <script>
+            window.addEventListener("load", function () {
+                let notifyModalEl = document.querySelector(".modal-container");
+                storage = localStorage;
+                document.querySelector(".close-modal").addEventListener("click", () => {
+                    notifyModalEl.classList.remove("active");
+                    storage.setItem("notifyModal", "close");
+                });
+                document.addEventListener("click", function (e) {
+                    if (e.target == notifyModalEl) {
+                        notifyModalEl.classList.remove("active");
+                        storage.setItem("notifyModal", "close");
+                    }
+                });
+                setTimeout(function () {
+                    if (storage.notifyModal == "open" || storage.notifyModal == undefined) {
+                        notifyModalEl.classList.add("active");
+                        storage.setItem("notifyModal", "open");
+                    }
+                }, 10000);
+            });
+
+            Fancybox.bind('[data-fancybox="gallery"]', {
+                infinite: false,
+            });
+        </script>
+        <script type="text/javascript">
+            var app_url = "https://urlshortener.my.id/";
+            var app_api_token = "6cfec4e31e8ab268a969bddd401fd3eb0d512083";
+            var app_advert = 2;
+            var app_exclude_domains = [
+                "www.moviepagol.com",
+                "moviepagol.com",
+                "https://www.moviepagol.com",
+                "https://moviepagol.com",
+            ];
+        </script>
+        <script src="https://urlshortener.my.id/js/full-page-script.js"></script>
+        <script src="{% static 'vendor/preline/preline.js' %}"></script>
+    </body>
+</html>

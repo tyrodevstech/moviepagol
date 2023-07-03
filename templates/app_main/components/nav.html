@@ -1,0 +1,260 @@
+{% load static %} 
+<div class="nav-wrapper">
+    <div class="nav px-4" x-data="{ sidebarOpen: false, searchShow: false }">
+        <button
+            @click="sidebarOpen = !sidebarOpen; searchShow = false"
+            class="grid h-10 w-10 place-items-center rounded focus-within:bg-neutral-700 lg:hidden"
+            id="hamburger"
+        >
+            <i class="ti ti-align-left text-2xl leading-none" :class="sidebarOpen ? 'ti-x': '' "></i>
+        </button>
+        <a href="/" class="logo sm:mr-auto sm:ml-2 lg:m-0">
+            <img src="{% static 'moviepagol-logo.png' %}" alt="moviepagol-logo" class="brand-logo" />
+        </a>
+        <ul class="menu-items" id="nav-menu" :class="sidebarOpen ? 'active': '' ">
+            <li class="dropdown">
+                <a class="menu-item expand-btn uppercase"
+                    ><span>Movies</span><i class="ti ti-chevron-down"></i>
+                </a>
+                <ul class="dropdown-menu expandable">
+                    <li><a href="{% url 'movies' type='english' %}" class="menu-item">English</a></li>
+                    <li class="dropdown-right">
+                        <a class="menu-item expand-btn">Indian<i class="ti ti-caret-right"></i></a>
+                        <ul class="menu-right expandable">
+                            <li><a href="{% url 'movies' type='hindi' %}" class="menu-item">Hindi</a></li>
+                            <li><a href="{% url 'movies' type='tamil' %}" class="menu-item">Tamil</a></li>
+                            <li>
+                                <a href="{% url 'movies' type='malayalam' %}" class="menu-item">Malayalam</a>
+                            </li>
+                            <li><a href="{% url 'movies' type='telugu' %}" class="menu-item">Telugu</a></li>
+                            <li>
+                                <a href="{% url 'movies' type='kannada' %}" class="menu-item">Kannada</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'movies' type='bengali' %}" class="menu-item">Bengali</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-right">
+                        <a class="menu-item expand-btn">Foreign<i class="ti ti-caret-right"></i></a>
+                        <ul class="menu-right expandable">
+                            <div class="menu-items-part-container">
+                                <div class="menu-items-part">
+                                    <li>
+                                        <a href="{% url 'movies' type='korean' %}" class="menu-item">Korean</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='spanish' %}" class="menu-item">Spanish</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='japanese' %}" class="menu-item">Japanese</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='turkish' %}" class="menu-item">Turkish</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='chinese' %}" class="menu-item">Chinese</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='indonesian' %}" class="menu-item">Indonesian</a>
+                                    </li>
+                                </div>
+                                <div class="menu-items-part">
+                                    <li>
+                                        <a href="{% url 'movies' type='iranian' %}" class="menu-item">Iranian</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='french' %}" class="menu-item">French</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='german' %}" class="menu-item">German</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='russian' %}" class="menu-item">Russian</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='thai' %}" class="menu-item">Thai</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'movies' type='others' %}" class="menu-item">Others</a>
+                                    </li>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown-right">
+                        <a class="menu-item expand-btn">Classic<i class="ti ti-caret-right"></i></a>
+                        <ul class="menu-right expandable">
+                            <li>
+                                <a href="{% url 'classic' type='hollywood' %}" class="menu-item">Hollywood</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'classic' type='bollywood' %}" class="menu-item">Bollywood</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'classic' type='foreign' %}" class="menu-item">Foreign</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'classic' type='horror' %}" class="menu-item">Horror</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'imdbtop' %}" class="menu-item">Imdb Top 250</a></li>
+                    <li><a href="{% url 'oscarwinning' %}" class="menu-item">Oscar Winning</a></li>
+                    <li class="dropdown-right">
+                        <a class="menu-item expand-btn">Special Category<i class="ti ti-caret-right"></i></a>
+                        <ul class="menu-right expandable">
+                            <li><a href="{% url 'bsub' %}" class="menu-item">BSub</a></li>
+                            <li><a href="{% url 'hindidubbed' %}" class="menu-item">Hindi Dubbed</a></li>
+                            <li><a href="{% url 'dualaudio' %}" class="menu-item">Dual Audio</a></li>
+                            <li><a href="{% url 'satyajitray' %}" class="menu-item">Satyajit Ray</a></li>
+                            <li><a href="{% url 'jamesbond' %}" class="menu-item">James Bond</a></li>
+                            <li><a href="{% url 'superhero' %}" class="menu-item">Superhero</a></li>
+                            <li><a href="{% url 'found_footage' %}" class="menu-item">Found Footage</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'movies' type='documentary' %}" class="menu-item">Documentary</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="menu-item expand-btn uppercase"
+                    ><span>Animations</span><i class="ti ti-chevron-down"></i></a>
+                <ul class="dropdown-menu expandable">
+                    <li><a href="{% url 'movies' type='animation' %}" class="menu-item">Movies</a></li>
+                    <li><a href="{% url 'series' type='animation' %}" class="menu-item">Series</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="menu-item expand-btn uppercase"
+                    ><span>Tv & Web Series</span><i class="ti ti-chevron-down"></i></a>
+                <ul class="dropdown-menu expandable">
+                    <li><a href="{% url 'series' type='english' %}" class="menu-item">English</a></li>
+                    <li><a href="{% url 'series' type='foreign' %}" class="menu-item">Foreign</a></li>
+                    <li><a href="{% url 'series' type='indian' %}" class="menu-item">Indian</a></li>
+                    <li><a href="{% url 'series' type='korean' %}" class="menu-item">K-Dramas</a></li>
+                    <li>
+                        <a href="{% url 'series' type='documentary' %}" class="menu-item">Documentary</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="menu-item expand-btn uppercase"
+                    ><span>Genres</span><i class="ti ti-chevron-down"></i></a>
+                <ul class="dropdown-menu expandable">
+                    <div class="menu-items-part-container">
+                        {% for genres in genresList %}
+                        <div class="menu-items-part">
+                            {% for genre in genres %}
+                            <li>
+                                <a href="{% url 'genres' genrename=genre.genre_name|lower %}" class="menu-item"
+                                    >{{genre.genre_name}}</a
+                                >
+                            </li>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="menu-item expand-btn uppercase"
+                    ><span>Softwares & Games</span><i class="ti ti-chevron-down"></i></a>
+                <ul class="dropdown-menu expandable">
+                    <li>
+                        <a href="{% url 'softwaresGames' category='softwares' %}" class="menu-item">Softwares</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'softwaresGames' category='games' %}" class="menu-item">Games</a>
+                    </li>
+                    <li class="dropdown-right">
+                        <a class="menu-item expand-btn">Extras<i class="ti ti-caret-right"></i></a>
+                        <ul class="menu-right expandable">
+                            <li>
+                                <a href="{% url 'softwaresGames' category='ebooks' %}" class="menu-item">eBooks</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'softwaresGames' category='tutorials' %}" class="menu-item"
+                                    >Tutorials</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="signin__mobile block lg:hidden px-3">
+                <a  href="https://moviepagol.com/admin"
+                    class=" bg-accent px-3 py-2 text-xs lg:flex justify-center items-center rounded whitespace-nowrap">
+                    <i class="inline-block ti ti-login rotate-180 mr-1"></i>
+                    <span>Sign In</span>
+                </a>
+            </li>
+        </ul>
+        <!-- MOBILE MENU TOGGLE -->
+        <div class="ham__search flex h-9 gap-4">
+            <div
+                class="search-container"
+                id="searchContainer"
+                :class="{'search-show' : searchShow}"
+            >
+                <div class="relative ml-auto h-full w-full sm:max-w-md lg:max-w-xs items-center sm:flex">
+                    <form action="/search" class="flex h-full w-full items-center overflow-hidden rounded-md bg-neutral-700 text-neutral-300">
+                        <button type="submit" class="grid w-12 place-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-initial" viewBox="0 0 24 24">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path
+                                    d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z"
+                                    fill="#fff"
+                                ></path>
+                            </svg>
+                        </button>
+
+                        <input
+                            class="peer h-full w-full bg-neutral-700 sm:w-56 lg:w-full xl:w-48 2xl:w-56 pr-2 text-sm text-neutral-300 outline-none"
+                            hx-get="{% url 'hx_search_list' %}"
+                            hx-trigger="keyup[target.value.length > 1] delay:500ms"
+                            _="on keyup if my.value.length <= 1 add .hidden to #search-results"
+                            hx-target="#search-results"
+                            x-ref="search_field"
+                            name="q"
+                            type="text"
+                            id="search"
+                            required
+                            minlength="2"
+                            placeholder="Search something.."
+                            autocomplete="off"
+                        />
+                    </form>
+
+                    <div
+                        class="absolute left-auto right-0 top-full mt-2 hidden max-h-96 w-full max-w-md overflow-y-auto bg-gray-700"
+                        hx-on="htmx:afterSwap: event.target.classList.remove('hidden')"
+                        id="search-results"
+                    ></div>
+                </div>
+            </div>
+            <button
+                class="grid h-10 w-10 lg:scale-90 place-items-center rounded hover:bg-neutral-700 sm:hidden lg:grid xl:hidden"
+                @click="searchShow = !searchShow;sidebarOpen = false; $nextTick(() => $refs.search_field.focus())"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:scale-90 flex-initial" viewBox="0 0 24 24">
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                        d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z"
+                        fill="#fff"
+                    ></path>
+                </svg>
+            </button>
+            <a
+            href="https://moviepagol.com/admin"
+            class=" bg-accent px-2 text-xs hidden lg:flex justify-center items-center rounded whitespace-nowrap"
+            >
+                <i class="ti ti-login rotate-180 mr-1"></i>
+                <span>Sign In</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- End Nav -->

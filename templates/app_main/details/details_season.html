@@ -1,0 +1,245 @@
+{% extends 'app_main/base.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block title %}{{obj.series.title}} (Season {{obj.season_number}}) | Movie Pagol{% endblock title %}
+{% block description %}{{obj.series.description|truncatechars:500}}{% endblock description %}
+
+{% block twittertitle %}{{obj.series.title}} (Season {{obj.season_number}}) | Movie Pagol{% endblock twittertitle %}
+{% block twitterdescription %}{{obj.series.description|truncatechars:500}}{% endblock twitterdescription %}
+{% block twitterimg %}{% if obj.series.tmdb_thumbnail %}{{obj.series.tmdb_thumbnail}}{% elif obj.series.thumbnail %}{{ SITE_URL }}{{obj.series.thumbnail.url}}{% endif %}{% endblock twitterimg %}
+
+{% block ogtitle %}{{obj.series.title}} (Season {{obj.season_number}}) | Movie Pagol{% endblock ogtitle %}
+{% block ogtype %}{{obj.series.type}}{% endblock ogtype%}
+{% block ogimage %}{% if obj.series.tmdb_thumbnail %}{{obj.series.tmdb_thumbnail}}{% elif obj.series.thumbnail %}{{ SITE_URL }}{{obj.series.thumbnail.url}}{% endif %}{% endblock ogimage %}
+{% block ogdescription %}{{obj.series.description|truncatechars:500}}{% endblock ogdescription %}
+
+{% block content %}
+{% if episodes %}
+<div class="episode-main" data-season-id="{{obj.id}}">
+    <div id="primary-slider" class="splide">
+        <div class="splide__track">
+            <ul class="splide__list">
+                {% for episode in episodes %}
+                <li class="splide__slide">
+                    <img src="{% if obj.series.tmdb_poster %}{{ obj.series.tmdb_poster }}{% elif obj.series.poster %}{{obj.series.poster.url}}{% elif obj.series.tmdb_thumbnail %}{{obj.series.tmdb_thumbnail}}{% elif obj.series.thumbnail %}{{obj.series.thumbnail.url}}{% else %}''{% endif %}"
+                        loading="lazy">
+                    <div class="primary-slider-content">
+                        <h2>{{obj.series.title}} : Season {{obj.season_number}} , Episode {{episode.episode}}</h2>
+                        <h1 class="title">{{episode.title}}</h1>
+                        <div class="episode-descript">
+                            {{episode.description|safe}}
+                        </div>
+
+                        <div class="item-action gap-3">
+
+                            <div class="dropdown-container">
+                                <div class="btn btn-hover downloadbtn">
+                                    <i class="ti ti-caret-right expand-icon"></i>
+                                    <span> watch </span>
+                                </div>
+                                <div class="dropdown">
+                                    <ul>
+                                        {% if episode.watch_link_main_source or episode.watch_link_alt1_url or episode.watch_link_alt2_url %}
+                                        {% if episode.watch_link_main_source %}
+                                        <li><a href="{{ episode.watch_link_main_source }}">Main Source</a></li>
+                                        {% endif %}
+                                        {% if episode.watch_link_alt1_name and episode.watch_link_alt1_url %}
+                                        <li><a
+                                                href="{{ episode.watch_link_alt1_url }}">{{ episode.watch_link_alt1_name }}</a>
+                                        </li>
+                                        {% endif %}
+                                        {% if episode.watch_link_alt2_name and episode.watch_link_alt2_url %}
+                                        <li><a
+                                                href="{{ episode.watch_link_alt2_url }}">{{ episode.watch_link_alt2_name }}</a>
+                                        </li>
+                                        {% endif %}
+                                        {% else %}
+                                        <li><a>No Link Available</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="dropdown-container">
+                                <div class="btn btn-hover downloadbtn">
+                                    <i class="ti ti-caret-right expand-icon"></i>
+                                    <span> Download </span>
+                                </div>
+
+
+                                <div class="dropdown">
+                                    <ul>
+                                        {% if episode.linkepisodesource %}
+                                        {% for source in episode.linkepisodesource.all %}
+                                        <li>
+                                            <a class="toogle-dropdown-sub"><i
+                                                    class="ti ti-caret-right expand-icon"></i>{{source}}</a>
+                                            <div class="dropdown-sub">
+                                                {% for cat in source.linkepisodecat.all %}
+                                                <a class="toogle-dropdown-sub"><i
+                                                        class="ti ti-caret-right expand-icon"></i>{{cat.category}}</a>
+                                                <div class="dropdown-sub">
+                                                    {% for subcat in cat.linkepisodesubcat.all|sortSubCatQs %}
+                                                    <a href="{{subcat.link}}">{{subcat.subcategory}}</a>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% if episode.subtitle_link %}
+                        <div class="subtitle">
+                            <h3>
+                                <a class="" href="{{episode.subtitle_link}}"><span>Download
+                                        Subtitle</span></a>
+                            </h3>
+                        </div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div id="secondary-slider" class="splide">
+        <div class="content">
+            <h2>Episodes List <i class="fad fa-angle-double-right"></i></h2>
+        </div>
+        <div class="splide__track">
+            <ul class="splide__list">
+                {% for episode in episodes %}
+                <li class="splide__slide">
+                    <img src="{% if episode.tmdb_thumbnail %}{{episode.tmdb_thumbnail}}{% elif episode.thumbnail %}{{ episode.thumbnail.url }}{% elif obj.thumbnail %}{{obj.thumbnail.url}}{% elif obj.series.tmdb_thumbnail %}{{obj.series.tmdb_thumbnail}}{% else %}{{obj.series.thumbnail.url}}{% endif %}"
+                        loading="lazy" alt="">
+                    <div class="ep-num">
+                        <h2>Ep {{episode.episode}}</h2>
+                    </div>
+                    <div class="content-infos">
+                        {% if episode.rating %}
+                        <div class="content-info">
+                            <i class="ti ti-star"></i>
+                            <span>{{episode.rating}}</span>
+                        </div>
+                        {% endif %}
+                        {% if episode.runtime %}
+                        <div class="content-info">
+                            <i class="ti ti-clock"></i>
+                            <span>{{episode.runtime}}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="text-lg sm:text-xl text-justify font-semibold line-clamp-2">{{obj.series.title}}</h2>
+        </div>
+        <h2>Download Full Season-{{obj.season_number}} ( Zip / RAR )</h2>
+        <div class="dropdown-container " style="width: max-content;margin-top: 1rem;">
+            <div class="btn btn-hover downloadbtn">
+                <i class="ti ti-caret-right expand-icon"></i>
+                <span> Select Quality</span>
+            </div>
+
+            <div class="dropdown" style="margin-right: 0;margin-left: 0;">
+                <ul>
+                    {% if obj.download_full_quality_480p or obj.download_full_quality_720p or obj.download_full_quality_1080p or obj.download_full_quality_2160p or obj.download_full_download_dual_audio or obj.download_full_download_hindi_dubbed %}
+                    {% if obj.download_full_quality_480p %}
+                    <li>
+                        <a href="{{obj.download_full_quality_480p}}">480p</a>
+                    </li>
+                    {% endif %}
+                    {% if obj.download_full_quality_720p %}
+                    <li>
+                        <a href="{{obj.download_full_quality_720p}}">720p</a>
+                    </li>
+                    {% endif %}
+                    {% if obj.download_full_quality_1080p %}
+                    <li>
+                        <a href="{{obj.download_full_quality_1080p}}">1080p</a>
+                    </li>
+                    {% endif %}
+                    {% if obj.download_full_quality_2160p %}
+                    <li>
+                        <a href="{{obj.download_full_quality_2160p}}">2160p</a>
+                    </li>
+                    {% endif %}
+                    {% if obj.download_full_download_dual_audio %}
+                    <li>
+                        <a href="{{obj.download_full_download_dual_audio}}">Dual audio</a>
+                    </li>
+                    {% endif %}
+                    {% if obj.download_full_download_hindi_dubbed %}
+                    <li>
+                        <a href="{{obj.download_full_download_hindi_dubbed}}">Hindi Dubbed</a>
+                    </li>
+                    {% endif %}
+                    {% else %}
+                    <li>
+                        <a>No link available</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Recommend Section -->
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h3>You may also like</h3>
+        </div>
+        <div class="splide slider__content animate__animated" id="">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- ITEM -->
+                    {% for i in recobjs|slice:":50" %}
+                    <li class="splide__slide">
+                        <a href="{% url 'details_season' pk=i.id %}" class="slide-item">
+                            <div class="play-btn">
+                                <i class="ti ti-player-play"></i>
+                            </div>
+                            <div class="card-overlay"></div>
+                            <img data-splide-lazy="{% if i.thumbnail %}{{ i.thumbnail.url }}{% elif i.series.tmdb_thumbnail %}{{i.series.tmdb_thumbnail}}{% elif i.series.thumbnail %}{{i.series.thumbnail.url}}{% endif %}"
+                                alt="thumbnail">
+                            <div class="slide-item__content">
+                                <div class="slide-item__title">
+                                    {{i.series.title}} - Season {{i.season_number}}
+                                </div>
+                                <div class="content-infos">
+                                    <div class="content-info">
+                                        <i class="ti ti-box-multiple"></i>
+                                        <span>Ep: {{i.episode_count}}</span>
+                                    </div>
+                                    <div class="content-info">
+                                        <i class="ti ti-dots-circle-horizontal"></i>
+                                        <span>{% if i.complete %} Completed {% else %} Running {% endif %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <!-- END ITEM -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Recommend Section -->
+{% comment %} {% include 'app_main/components/comments.html' %} {% endcomment %}
+
+{% endblock content %}

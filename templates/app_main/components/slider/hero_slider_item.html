@@ -1,0 +1,116 @@
+{% load customtags %} 
+
+{% if i.movie_content %}
+<li class="splide__slide">
+    <div class="hero-slide">
+        <img data-splide-lazy="{% if i.movie_content.tmdb_poster %}{{i.movie_content.tmdb_poster}}{% elif i.movie_content.poster %}{{i.movie_content.poster.url}}{% elif i.movie_content.thumbnail %}{{i.movie_content.thumbnail.url}}{% endif %}"
+            alt="poster" />
+        <div class="overlay"></div>
+        <div class="hero-slide__content">
+            <div class="hero-slide__title top-down mb-2 line-clamp-2 leading-[115%] xl:mb-4">
+                {{i.movie_content.title|safe}}
+            </div>
+            <div class="content-infos top-down delay-2">
+                <div class="content-info">
+                    <i class="ti ti-star"></i>
+                    <span>{{i.movie_content.rating}}</span>
+                </div>
+                <i class="ti ti-point-filled"></i>
+                <div class="content-info">
+                    <i class="ti ti-clock"></i>
+                    <span>{{i.movie_content.runtime}}</span>
+                </div>
+                <i class="ti ti-point-filled"></i>
+                <div class="content-info">
+                    <i class="ti ti-align-box-bottom-right"></i>
+                    <span>{{i.movie_content.type|humanize}}</span>
+                </div>
+                {% if i.movie_content.rated %}
+                <i class="ti ti-point-filled"></i>
+                <div class="content-info">
+                    <i class="ti ti-wave-saw-tool"></i>
+                    <span>{{i.movie_content.rated}}</span>
+                </div>
+                {% endif %} 
+                <div class="meta-infos">
+                    {% if i.movie_content.info1 %}
+                    <div class="meta-info meta-info-1">{{i.movie_content.info1}}</div>
+                    {% endif %} 
+                    {% if i.movie_content.info2 %}
+                    <div class="meta-info meta-info-2">{{i.movie_content.info2}}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div
+                class="hero-slide__description top-down delay-4">
+                {{i.movie_content.description|slice:":320"}}
+            </div>
+            <div class="actions-container top-down delay-6 mt-6 xl:mt-10">
+                <a href="{% url 'details_movie' pk=i.movie_content.slug %}"
+                    class="btn btn-hover">
+                    <i class="ti ti-caret-right"></i>
+                    <span>View details</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</li>
+{% endif %} 
+{% if i.series_content %}
+<li class="splide__slide">
+    <div class="hero-slide">
+        <img data-splide-lazy="{% if i.series_content.tmdb_poster %}{{i.series_content.tmdb_poster}}{% elif i.series_content.poster %}{{i.series_content.poster.url}}{% elif i.series_content.thumbnail %}{{i.series_content.thumbnail.url}}{% endif %}"
+            alt="poster" />
+        <div class="overlay"></div>
+        <div class="hero-slide__content">
+            <div class="hero-slide__title top-down mb-2 line-clamp-2 leading-[115%] xl:mb-4">
+                {{i.series_content.title|safe}}
+            </div>
+            <div class="content-infos top-down delay-2 gap-3">
+                <div class="content-info">
+                    <i class="ti ti-star"></i>
+                    <span>{{i.series_content.rating}}</span>
+                </div>
+                <i class="ti ti-point-filled"></i>
+                <div class="content-info">
+                    <i class="ti ti-align-box-bottom-right"></i>
+                    <span>{{i.series_content.type|humanize}}</span>
+                </div>
+                <i class="ti ti-point-filled"></i>
+                <div class="content-info">
+                    <i class="ti ti-calendar-stats"></i>
+                    <span>{% if not i.series_content.end_date %}
+                        {{i.series_content.release_date|date:"Y"}} {% else %}
+                        {{i.series_content.release_date|date:"Y"}} -
+                        {{i.series_content.end_date|date:"Y"}}{% endif %}</span>
+                </div>
+                {% if i.series_content.rated %}
+                <i class="ti ti-point-filled"></i>
+                <div class="content-info">
+                    <i class="ti ti-wave-saw-tool"></i>
+                    <span>{{i.series_content.rated}}</span>
+                </div>
+                {% endif %} 
+                <div class="meta-infos">
+                    {% if i.series_content.info1 %}
+                    <div class="meta-info meta-info-1">{{i.series_content.info1}}</div>
+                    {% endif %} {% if i.movie_content.info2 %}
+                    <div class="meta-info meta-info-2">{{i.series_content.info2}}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div
+                class="hero-slide__description top-down delay-4">
+                {{i.series_content.description|slice:":320"}}
+            </div>
+            <div class="actions-container top-down delay-6 mt-6 xl:mt-10">
+                <a href="{% url 'details_series' pk=i.series_content.slug %}"
+                    class="btn btn-hover">
+                    <i class="ti ti-caret-right"></i>
+                    <span>View details</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</li>
+{% endif %} 
